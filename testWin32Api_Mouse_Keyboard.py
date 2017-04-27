@@ -28,24 +28,18 @@ win32api.mouse_event(win32con.MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0)
 win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, 0, 0, 0, 0)
 time.sleep(0.5)
 
-def input_str1(ss):
+def input_str(ss, t):
     for i in ss:
         print i, ord(i)
         win32api.keybd_event(ord(i),0,0,0)
         win32api.keybd_event(ord(i),0,win32con.KEYEVENTF_KEYUP,0)
-
-def input_str2(ss):
-    for i in ss:
-        print i
-        win32api.keybd_event(ord(i), 0, 0, 0)
-        win32api.keybd_event(ord(i), 0, win32con.KEYEVENTF_KEYUP, 0)
-        time.sleep(5)
+        time.sleep(t)
 
 # 帳號
-input_str1("ABCD")
+input_str("ABCD", 0)
 win32api.keybd_event(9,0,0,0)
 win32api.keybd_event(9,0,win32con.KEYEVENTF_KEYUP,0)
 # 密碼
-input_str2("A1B2C")
+input_str("A1B2C", 5)
 win32api.keybd_event(13,0,0,0)
 win32api.keybd_event(13,0,win32con.KEYEVENTF_KEYUP,0)
