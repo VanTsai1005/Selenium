@@ -8,12 +8,12 @@ import time
 chrome_path = "C:/chromedriver.exe"
 web = webdriver.Chrome(chrome_path)
 
-ACCOUNTNAME = "YourAccountName"
-PASSWORD = "YourPassword"
+ACCOUNTNAME = "xxxxxxxxxxxxxxxxxxxxxxxx"
+PASSWORD = "xxxxxxxxxxxxxxxxxxx"
 url = "C:/tmp/code.bmp"
 
 try:
-    web .get("https://ebsnew.boc.cn/boc15/login.html?locale=zh_CN")
+    web .get("xxxxxxxxxxxxxxxxxxxxxxxxxxx")
     web.find_element_by_id("txt_username_79443").send_keys(ACCOUNTNAME)
     time.sleep(1)
     web.find_element_by_id("input_div_password_79445").click()
@@ -23,21 +23,16 @@ try:
 
     classNames = ["bu-header", "sn-box", "login-aside", "bu-footer", "menu-tab"]
     js_hidden = "document.getElementsByClassName('{}')[0].style.display='none'"
-    js1 = "document.getElementsByClassName('clearfix')[7].style.visibility='hidden'"
-    js2 = "document.getElementsByClassName('clearfix')[8].style.visibility='hidden'"
-    js3 = "document.getElementsByClassName('btn-login')[1].style.visibility='hidden'"
-    js4 = "document.getElementsByClassName('item-title')[5].style.visibility='hidden'"
-    js5 = "document.getElementById('txt_captcha_741012').style.display='none'"
-    js6 = "document.getElementById('a_shuaxin_741013').style.display='none'"
+    js1 = "document.getElementsByClassName('clearfix')[7].style.visibility='hidden';" \
+          "document.getElementsByClassName('clearfix')[8].style.visibility='hidden';" \
+          "document.getElementsByClassName('btn-login')[1].style.visibility='hidden';" \
+          "document.getElementsByClassName('item-title')[5].style.visibility='hidden';" \
+          "document.getElementById('txt_captcha_741012').style.display='none';" \
+          "document.getElementById('a_shuaxin_741013').style.display='none';"
 
     for i in range(len(classNames)):
         web.execute_script(js_hidden.format(classNames[i]))
     web.execute_script(js1)
-    web.execute_script(js2)
-    web.execute_script(js3)
-    web.execute_script(js4)
-    web.execute_script(js5)
-    web.execute_script(js6)
 
     web.save_screenshot(url)
     #  驗證碼辨識
