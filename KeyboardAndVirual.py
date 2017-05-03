@@ -34,10 +34,25 @@ class KeyboardAndVirual:
     for i in range(1, 10, 1):
         keyCorrespond.__setitem__(str(i), 200 + i)
 
-    def passwordKeyin(self, passwd):
+    def passwordKeyin(self, passwd, delay=0):
+        import re
         dllUrl = "C:/DLL/DD64.dll"
         dd_dll = windll.LoadLibrary(dllUrl)
-        for s in passwd:
-            dd_dll.DD_key(int(self.keyCorrespond.__getitem__(s)), 1)
-            dd_dll.DD_key(int(self.keyCorrespond.__getitem__(s)), 2)
+        import time
+        if self.keyCorrespond.has_key(passwd):
+            dd_dll.DD_key(int(self.keyCorrespond.__getitem__(passwd)), 1)
+            dd_dll.DD_key(int(self.keyCorrespond.__getitem__(passwd)), 2)
+        else:
+            for s in passwd:
+                if re.match(r'[A-Z]', s):
+                    s = s.lower()
+                    dd_dll.DD_key(int(self.keyCorrespond.__getitem__("shift")), 1)
+                    dd_dll.DD_key(int(self.keyCorrespond.__getitem__(s)), 1)
+                    dd_dll.DD_key(int(self.keyCorrespond.__getitem__(s)), 2)
+                    dd_dll.DD_key(int(self.keyCorrespond.__getitem__('shift')), 2)
+                else:
+                    dd_dll.DD_key(int(self.keyCorrespond.__getitem__(s)), 1)
+                    dd_dll.DD_key(int(self.keyCorrespond.__getitem__(s)), 2)
+                time.sleep(delay)
+
 
