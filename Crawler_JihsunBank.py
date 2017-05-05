@@ -1,18 +1,8 @@
 #coding:utf-8
-from DecodeVerificationCode import getVerificationCode
 from selenium import webdriver
 from Tkinter import *
-
-def controlElement(status):
-    js_login = "document.getElementById('{}').style.display='{}'"
-    js_other = "document.getElementsByTagName('a')[{}].style.display='{}'"
-    web.execute_script(js_login.format("Source", status))
-    web.execute_script(js_login.format("UserName", status))
-    web.execute_script(js_login.format("Password", status))
-    web.execute_script(js_login.format("txtCode", status))
-    web.execute_script(js_login.format("OK", status))
-    web.execute_script(js_other.format("0", status))
-    web.execute_script(js_other.format("1", status))
+from WebLib import WebLib
+from identification_codes_svm import identification_codes
 
 #  程式一執行產生輸入帳號密碼介面
 win=Tk()
@@ -67,14 +57,10 @@ win.mainloop()
 if USER_NAME == None or PASSWD == None:
     exit()
 
-# phantom_path = "C:/Users/use/Anaconda2/Lib/site-packages/phantomjs-2.1.1-windows/bin/phantomjs.exe"
-# web = webdriver.PhantomJS(phantom_path)
-
 chrome_path = "C:/chromedriver.exe"
 web = webdriver.Chrome(chrome_path)
 
 web.get("https://netbank.jihsunbank.com.tw/netbank/left.asp")
-
 COUNT = 1
 while COUNT < 4:
     #  被包在iframe裡面，必須先切換
@@ -84,18 +70,15 @@ while COUNT < 4:
     web.find_element_by_id("UserName").send_keys(USER_NAME)
     web.find_element_by_id("Password").send_keys(PASSWD)
 
-    #  消除不需要的元素後存成圖片
-    controlElement("None")
-    src = web.find_element_by_id("imgCode").get_attribute("src")+".bmp"
+    img_path = "C:/Users/use/Desktop/Test/samples/"
+    img = web.find_element_by_id("imgCode")
+    cropImg = WebLib()
+    cropImg.take_screenshot_on_element(img_path , web, img)
 
-    url = "C:/Users/use/Desktop/code.bmp"
-    web.save_screenshot(url)
-
-    #  回復網頁上的元素進行資料填寫
-    controlElement("")
-
-    #  驗證碼辨識
-    DVCODE = getVerificationCode(url)
+    base_path = "C:/Users/use/Desktop/Test/"
+    train_path = "C:/Users/use/Desktop/train_data"
+    model_path = "C:/Users/use/Desktop/model_data"
+    DVCODE = identification_codes(base_path, train_path, model_path)
 
     web.find_element_by_id("txtCode").send_keys(DVCODE)
     web.find_element_by_id("OK").click()
